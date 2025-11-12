@@ -1,0 +1,53 @@
+<section class="login">
+  <div class="wrapper">
+    <div class="section-left">
+     <header class="brand__header">
+        <div class="brand__logo"><img src="/assets/images/logo-tiendify.png" alt="Logo Tiendify"></div>
+        <div><h1 class="brand__title">Tiendify</h1><p class="brand__subtitle">Punto de Venta ágil</p></div>
+      </header>
+
+      <figure class="brand__mock"><img src="/assets/images/hero-pos-es.png" alt="Vista del POS"></figure>
+
+      <ul class="brand__features">
+        <li class="brand__feature"><span class="brand__feature-bullet">✓</span>Cobros rápidos</li>
+        <li class="brand__feature"><span class="brand__feature-bullet">✓</span>Control de inventario y alertas de stock</li>
+        <li class="brand__feature"><span class="brand__feature-bullet">✓</span>Usuarios por rol: Cajero, Encargado, Propietario</li>
+        <li class="brand__feature"><span class="brand__feature-bullet">✓</span>Reportes diarios y conciliación de caja</li>
+      </ul>
+
+    </div>
+
+    <div class="section-right">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="title">BIENVENIDO</h3>
+          <p class="form__desc">Ingresa tus credenciales para continuar.</p>
+          <div class="container-inputs">
+            <div class="pt-3 mb-3">Correo Electronico
+              <input type="email" [(ngModel)]="username" class="form-control" id="email" placeholder="Correo electrónico">
+            </div>
+
+            <div class="pt-3 mb-3">Contraseña
+              <div class="input-group input-group-merge">
+                <input type="{{type}}" [(ngModel)]="password" id="password" name="password_user" class="form-control pwd" placeholder="Contraseña" (keyup.enter)="login()">
+                <div class="input-group-text" id="show-password" data-password="false">
+                    <i *ngIf="type == 'password'" class="bi bi-eye-fill" (click)="showPassword()"></i>
+                    <i *ngIf="type == 'text'" class="bi bi-eye-slash-fill" (click)="showPassword()"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-check-label" for="checkbox-signin">¿No tiene cuenta?</label>
+              <label  class="crear cuenta" (click)="registrar()"> Crear cuenta</label>
+            </div>
+            <div class="d-flex flex-column align-items-center mb-3 w-100" style="text-align: center;">
+              <button class="btn btn-primary" type="submit" (click)="login()">Iniciar sesión</button>
+              <label class="form-check-label pt-3" for="checkbox-signin" (click)="registrar()">Crear cuenta</label>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
