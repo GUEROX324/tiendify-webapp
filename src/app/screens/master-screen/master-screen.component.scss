@@ -1,0 +1,210 @@
+/* =========================================================
+   POS – SCSS ÚNICO (con fixes de visibilidad y contraste)
+   Paleta: naranja #ea580c → #ff7a33
+   ========================================================= */
+
+/* ====== Base / Paleta ====== */
+:root{
+  --pos-orange-1:#ea580c;
+  --pos-orange-2:#ff7a33;
+  --pos-peach-1:#fff3ec;     /* encabezados suaves */
+  --pos-peach-2:#faf6f1;     /* rayado tabla */
+  --pos-bg:#fbf8f3;
+  --pos-card:#ffffff;
+  --pos-text:#0f172a;
+  --pos-muted:#6b7280;
+  --pos-border:#e7d8c8;      /* +contraste */
+  --pos-shadow:0 16px 44px rgba(13,42,53,.10);
+}
+
+/* ====== Shell ====== */
+.wrapper{
+  width:100%;
+  min-height:100vh;
+  background:var(--pos-bg);
+  color:var(--pos-text);
+  filter:none;
+}
+.body-admin{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto 42px;
+  padding:12px 16px;
+
+  /* Variables Bootstrap locales */
+  --bs-body-color:var(--pos-text);
+  --bs-heading-color:var(--pos-text);
+  --bs-table-color:var(--pos-text);
+  --bs-link-color:var(--pos-orange-1);
+}
+
+/* ====== Reset de visibilidad dentro del POS ====== */
+.body-admin,
+.body-admin :where(h1,h2,h3,h4,h5,h6,p,small,span,div,td,th,label,strong,em,a,li,button,i){
+  color:var(--pos-text) !important;
+  -webkit-text-fill-color:currentColor !important;
+  background-image:none !important;
+  -webkit-background-clip:border-box !important;
+  background-clip:border-box !important;
+  mix-blend-mode:normal !important;
+  opacity:1 !important;
+}
+
+/* ====== Headings / Chips ====== */
+.title-perfil{
+  display:inline-block;
+  padding:10px 16px;
+  border-radius:12px;
+  background:linear-gradient(90deg,var(--pos-orange-1),var(--pos-orange-2));
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  font-weight:900;
+  font-size:28px;
+  letter-spacing:.2px;
+  line-height:1.15;
+  box-shadow:0 8px 22px rgba(234,88,12,.25);
+  text-shadow:0 1px 0 rgba(0,0,0,.08);
+}
+
+/* ====== Cards ====== */
+.card{
+  background:var(--pos-card);
+  border:1px solid var(--pos-border);
+  border-radius:18px;
+  box-shadow:var(--pos-shadow);
+}
+.card--elev{ overflow:hidden; }
+.card-header--gradient{
+  background:var(--pos-peach-1);
+  border-bottom:1px solid var(--pos-border);
+  padding:12px 16px;
+}
+.title-card{
+  font-weight:800;
+  color:var(--pos-orange-1) !important;
+  -webkit-text-fill-color:var(--pos-orange-1) !important;
+  letter-spacing:.2px;
+}
+
+/* ====== Alert ====== */
+.alert-primary{
+  border:1px solid rgba(234,88,12,.28);
+  background:linear-gradient(90deg,var(--pos-orange-1),var(--pos-orange-2));
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-radius:12px;
+  padding:10px 14px;
+}
+.title-table{ font-weight:800; }
+
+/* ====== Search ====== */
+.pos-search{ position:relative; display:flex; align-items:center; }
+.pos-search__input{
+  height:50px;
+  border-radius:14px;
+  border:1.5px solid var(--pos-border);
+  padding-left:48px;
+  background:#fff;
+  box-shadow:0 4px 14px rgba(13,42,53,.06) inset;
+  color:var(--pos-text) !important;
+  -webkit-text-fill-color:var(--pos-text) !important;
+}
+.pos-search__input:focus{
+  outline:none;
+  border-color:var(--pos-orange-1);
+  box-shadow:0 0 0 3px rgba(234,88,12,.18);
+}
+.pos-search__input::placeholder{
+  color:#8a8f94 !important;
+  -webkit-text-fill-color:#8a8f94 !important;
+  opacity:1;
+}
+.pos-search__icon{
+  position:absolute; left:14px; font-size:18px;
+  color:#8a8f94 !important; -webkit-text-fill-color:#8a8f94 !important;
+}
+
+/* ====== Tablas ====== */
+.table{
+  --bs-table-color:var(--pos-text);
+  --bs-table-border-color:var(--pos-border);
+}
+.table thead th{
+  font-weight:800;
+  color:#0d2a35 !important;
+  -webkit-text-fill-color:#0d2a35 !important;
+  background:var(--pos-peach-1) !important;
+  border-bottom:1px solid var(--pos-border) !important;
+}
+.table tbody td{
+  vertical-align:middle;
+  border-top-color:var(--pos-border) !important;
+}
+.table-striped>tbody>tr:nth-of-type(odd){ --bs-table-accent-bg:#fff; }
+.table-striped>tbody>tr:nth-of-type(even){ --bs-table-accent-bg:var(--pos-peach-2); }
+.table tbody tr:hover{ background:#fffdf9; }
+
+.prod-name{ font-weight:700; }
+.prod-extra{ font-size:12px; color:#475569 !important; -webkit-text-fill-color:#475569 !important; }
+.cart-name{ font-weight:700; }
+.cart-price{ font-size:12px; color:#475569 !important; -webkit-text-fill-color:#475569 !important; }
+
+.total-row{ font-weight:900; font-size:1.1rem; }
+
+/* Acciones */
+.td-eliminar i{
+  cursor:pointer; color:#ef4444; transition:transform .12s ease, color .2s ease;
+}
+.td-eliminar i:hover{ transform:scale(1.12); color:#dc2626; }
+
+/* ====== Cantidad ====== */
+.qty{
+  display:inline-flex; gap:6px; align-items:center;
+  border:1px solid var(--pos-border);
+  border-radius:12px; padding:2px 6px; background:#fff;
+}
+.qty__btn{ border:0; box-shadow:none !important; }
+.qty__value{ min-width:28px; text-align:center; font-weight:700; }
+
+/* ====== Resumen mini ====== */
+.mini-summary{
+  border-radius:16px; border:1px solid var(--pos-border); background:#fff;
+}
+.mini-summary__label{ font-size:12px; color:#475569 !important; -webkit-text-fill-color:#475569 !important; }
+.mini-summary__value{ font-size:24px; font-weight:900; line-height:1; }
+.mini-summary__value.total{ color:var(--pos-orange-1); }
+
+/* ====== Pago ====== */
+.pos-pay .form-label{
+  font-weight:700;
+  color:var(--pos-text) !important;
+  -webkit-text-fill-color:var(--pos-text) !important;
+}
+.pos-pay .form-control{
+  height:46px; border-radius:12px; border:1.5px solid var(--pos-border);
+  color:var(--pos-text) !important; -webkit-text-fill-color:var(--pos-text) !important;
+}
+.pos-pay .form-control::placeholder{
+  color:#8a8f94 !important; -webkit-text-fill-color:#8a8f94 !important; opacity:1;
+}
+
+/* ====== Botones ====== */
+.btn-primary{
+  border:0; border-radius:12px;
+  background:linear-gradient(90deg,var(--pos-orange-1),var(--pos-orange-2));
+  color:#fff !important; -webkit-text-fill-color:#fff !important;
+  font-weight:800;
+}
+.btn-primary:disabled{ filter:grayscale(.35); opacity:.75; }
+.btn-outline-secondary{
+  border-radius:12px; color:var(--pos-text) !important; -webkit-text-fill-color:var(--pos-text) !important;
+  border-color:var(--pos-border);
+}
+.btn-outline-secondary:hover{
+  background:#faf6f1; border-color:var(--pos-orange-1); color:var(--pos-orange-1) !important; -webkit-text-fill-color:var(--pos-orange-1) !important;
+}
+
+/* ====== Responsivo ====== */
+@media (max-width:991.98px){
+  .mini-summary{ margin-top:8px; }
+}

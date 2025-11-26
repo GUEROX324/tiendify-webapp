@@ -1,0 +1,74 @@
+<div class="wrapper">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ng-container *ngIf="tipo!='registro-usuarios'; else registraUsers">
+            <li class="nav-item">
+              <a class="nav-link" id="principal" aria-current="page" (click)="clickNavLink('home')">Inicio</a>
+            </li>
+            <li class="nav-item" >
+              <a class="nav-link" routerLink="/ingresar-productos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"> Ingresar Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="principal" aria-current="page" (click)="clickNavLink('caja')">Caja</a>
+            </li>
+            <li class="nav-item" >
+              <a class="nav-link" id="materias" (click)="clickNavLink('productos')">Lista de Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="principal" aria-current="page" (click)="clickNavLink('gastos')">Gastos</a>
+            </li>
+            <li class="nav-item"*ngIf="rol!='trabajador'">
+              <a class="nav-link" id="graficas" (click)="clickNavLink('graficas')">Gráficas</a>
+            </li>
+          <!--Lista de Usuarios que hay-->
+            <li class="nav-item dropdown"*ngIf="rol!='trabajador'">
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Usuarios</a>
+
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li >
+              <a class="dropdown-item" id="principal" aria-current="page" (click)="clickNavLink('lista-admin')">Administradores</a>
+            </li>
+            <li *ngIf="rol!='alumno'">
+              <a class="dropdown-item" id="alumno" aria-current="page" (click)="clickNavLink('lista-trabajador')">Trabajadores</a>
+            </li>
+            <li *ngIf="rol!='maestro' && rol!='alumno'">
+              <a class="dropdown-item" id="maestro" (click)="clickNavLink('lista-master')">Master</a>
+            </li>
+              </ul>
+            </li>
+            <!--Registrar usuarios-->
+            <li class="nav-item dropdown"*ngIf="rol!='trabajador'">
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Registrar</a>
+
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" (click)="goRegistro()" *ngIf="rol!='trabajador'">Trabajadores</a></li>
+                <li><a class="dropdown-item" (click)="goRegistro()" *ngIf="rol!='trabajador '">Administradores</a></li>
+              </ul>
+            </li>
+          </ng-container>
+          <!-- En el else - del template mostrará todo lo correspondiente a la vista de registro -->
+          <ng-template #registraUsers>
+            <label class="navbar-brand" *ngIf="!editar">Registro de usuarios del sistema</label>
+            <label class="navbar-brand" *ngIf="editar">Editar usuario del sistema</label>
+          </ng-template>
+        </ul>
+        <form class="d-flex">
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li *ngIf="token != ''"><a class="dropdown-item" (click)="logout()">Cerrar Sesión</a></li>
+              <li *ngIf="tipo=='registro-usuarios' && token == ''"><a class="dropdown-item" href="#">Iniciar Sesión</a></li>
+            </ul>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,206 @@
+<div class="wrapper">
+  <div class="header-home-admin">
+    <app-navbar></app-navbar>
+  </div>
+
+  <div class="body-admin">
+    <!-- Encabezado -->
+    <div class="row mt-4 mb-3">
+      <div class="col-12">
+        <span class="title-perfil">Bienvenido {{ name_user }}</span>
+        <br /><br />
+        <span class="title-perfil">Punto de Venta</span>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Barra de búsqueda -->
+      <div class="row mt-3 align-items-center">
+        <div class="col-lg-8 col-md-12 mb-3">
+          <div class="alert alert-primary" role="alert">
+            <span class="title-table">Busca productos por nombre</span>
+          </div>
+
+          <div class="pos-search">
+            <input
+              type="text"
+              class="form-control pos-search__input"
+              placeholder="Escribe el nombre del producto..."
+              [(ngModel)]="busqueda"
+              (input)="onBuscar()"
+            />
+            <i class="bi bi-search pos-search__icon"></i>
+          </div>
+          <small class="text-muted">Resultados: {{ productosFiltrados.length || 0 }}</small>
+        </div>
+
+        <!-- Resumen mini (total y cobrar rápido) -->
+        <div class="col-lg-4 col-md-12 mb-3">
+          <div class="mini-summary card p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="mini-summary__label">Artículos</div>
+                <div class="mini-summary__value">{{ totalItems }}</div>
+              </div>
+              <div class="text-end">
+                <div class="mini-summary__label">Total</div>
+                <div class="mini-summary__value total">{{ total | currency:'MXN':'symbol-narrow' }}</div>
+              </div>
+            </div>
+            <div class="d-grid gap-2 mt-3">
+              <button class="btn btn-primary" (click)="onCobrar()" [disabled]="!carrito.length">
+                <i class="bi bi-cash-coin"></i> Cobrar
+              </button>
+              <button class="btn btn-outline-secondary" (click)="onCancelar()" [disabled]="!carrito.length">
+                <i class="bi bi-x-circle"></i> Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zona principal: Productos (izq) | Carrito (der) -->
+      <div class="row g-4 mt-1">
+        <!-- Productos -->
+        <div class="col-lg-7">
+          <div class="card card--elev mb-3">
+            <div class="card-header card-header--gradient">
+              <span class="title-card">Productos</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>Clave</th>
+                    <th>Producto</th>
+                    <th class="text-end">Precio</th>
+                    <th class="text-center">Stock</th>
+                    <th class="text-center">Agregar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of productosFiltrados; let i = index">
+                    <td>{{ p.clave }}</td>
+                    <td>
+                      <div class="prod-name">{{ p.nombre }}</div>
+                      <div class="prod-extra">Categoría: {{ p.categoria || '—' }}</div>
+                    </td>
+                    <td class="text-end">{{ p.precio | currency:'MXN':'symbol-narrow' }}</td>
+                    <td class="text-center">
+                      <span [class.text-danger]="p.stock === 0">{{ p.stock }}</span>
+                    </td>
+                    <td class="text-center">
+                      <button class="btn btn-sm btn-primary" (click)="agregarAlCarrito(p)" [disabled]="p.stock === 0">
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="!productosFiltrados.length">
+                    <td colspan="5" class="text-center text-muted py-4">
+                      <i class="bi bi-emoji-neutral"></i> No se encontraron productos con “{{ busqueda }}”.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carrito -->
+        <div class="col-lg-5">
+          <div class="card card--elev">
+            <div class="card-header card-header--gradient">
+              <span class="title-card">Carrito</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th class="text-center">Cant.</th>
+                    <th class="text-end">Importe</th>
+                    <th class="text-center">Quitar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of carrito; let i = index">
+                    <td>
+                      <div class="cart-name">{{ item.nombre }}</div>
+                      <div class="cart-price">{{ item.precio | currency:'MXN':'symbol-narrow' }}</div>
+                    </td>
+                    <td class="text-center">
+                      <div class="qty">
+                        <button class="btn btn-sm btn-light qty__btn" (click)="disminuir(i)">
+                          <i class="bi bi-dash"></i>
+                        </button>
+                        <span class="qty__value">{{ item.cantidad }}</span>
+                        <button class="btn btn-sm btn-light qty__btn" (click)="aumentar(i)">
+                          <i class="bi bi-plus"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="text-end">
+                      {{ (item.precio * item.cantidad) | currency:'MXN':'symbol-narrow' }}
+                    </td>
+                    <td class="text-center td-eliminar">
+                      <i class="bi bi-trash3-fill" (click)="eliminar(i)"></i>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="!carrito?.length">
+                    <td colspan="4" class="text-center text-muted py-4">
+                      <i class="bi bi-bag-dash"></i> Aún no has agregado productos.
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="carrito?.length">
+                  <tr>
+                    <td colspan="2" class="text-end fw-bold">Subtotal</td>
+                    <td class="text-end fw-bold">{{ subtotal | currency:'MXN':'symbol-narrow' }}</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-end">IVA (16%)</td>
+                    <td class="text-end">{{ iva | currency:'MXN':'symbol-narrow' }}</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-end total-row">Total</td>
+                    <td class="text-end total-row">{{ total | currency:'MXN':'symbol-narrow' }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Cobro -->
+            <div class="pos-pay" *ngIf="carrito?.length">
+              <div class="row g-2">
+                <div class="col-6">
+                  <label class="form-label">Recibido</label>
+                  <input type="number" class="form-control" min="0" [(ngModel)]="recibido" (input)="calcularCambio()" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Cambio</label>
+                  <input type="text" class="form-control" [value]="cambio | currency:'MXN':'symbol-narrow'" readonly />
+                </div>
+              </div>
+
+              <div class="d-grid gap-2 mt-3">
+                <button class="btn btn-primary" (click)="onCobrar()" [disabled]="total <= 0 || recibido < total">
+                  <i class="bi bi-receipt"></i> Confirmar pago
+                </button>
+                <button class="btn btn-outline-secondary" (click)="onCancelar()">
+                  <i class="bi bi-arrow-counterclockwise"></i> Vaciar carrito
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /row principal -->
+    </div> <!-- /container -->
+  </div> <!-- /body-admin -->
+</div>

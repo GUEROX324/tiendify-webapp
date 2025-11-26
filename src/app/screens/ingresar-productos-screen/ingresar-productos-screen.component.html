@@ -1,0 +1,194 @@
+<div class="wrapper">
+  <div class="header-home-admin">
+    <app-navbar></app-navbar>
+  </div>
+
+  <div class="body-admin">
+    <!-- Selector de modo -->
+    <div class="d-flex gap-2 mb-3">
+      <button class="btn"
+              [class.btn-primary]="modo==='nuevo'"
+              [class.btn-outline-secondary]="modo!=='nuevo'"
+              (click)="modo='nuevo'">
+        Registrar nuevo producto
+      </button>
+      <button class="btn"
+              [class.btn-primary]="modo==='existente'"
+              [class.btn-outline-secondary]="modo!=='existente'"
+              (click)="modo='existente'">
+        Actualizar producto existente
+      </button>
+    </div>
+
+    <!-- ================== NUEVO PRODUCTO ================== -->
+    <div *ngIf="modo==='nuevo'" class="card card--form">
+      <div class="card-header--gradient">
+        <h5 class="mb-0 title-card">Nuevo producto</h5>
+      </div>
+
+      <div class="card-body">
+        <div class="form-grid">
+          <div>
+            <label class="form-label required">Clave</label>
+            <input class="form-control" type="text" [(ngModel)]="form.clave" name="clave" placeholder="Ej. ABC-001">
+            <small class="text-danger" *ngIf="errors.clave">{{ errors.clave }}</small>
+          </div>
+
+          <div>
+            <label class="form-label required">Nombre</label>
+            <input class="form-control" type="text" [(ngModel)]="form.nombre" name="nombre" placeholder="Ej. Refresco 600ml">
+            <small class="text-danger" *ngIf="errors.nombre">{{ errors.nombre }}</small>
+          </div>
+
+          <div>
+            <label class="form-label required">Precio (MXN)</label>
+            <input class="form-control" type="number" min="0" step="0.01" [(ngModel)]="form.precio" name="precio" placeholder="0.00">
+            <small class="text-danger" *ngIf="errors.precio">{{ errors.precio }}</small>
+          </div>
+
+          <div>
+            <label class="form-label required">Stock</label>
+            <input class="form-control" type="number" min="0" step="1" [(ngModel)]="form.stock" name="stock" placeholder="0">
+            <small class="text-danger" *ngIf="errors.stock">{{ errors.stock }}</small>
+          </div>
+
+          <div>
+            <label class="form-label">Categoría</label>
+            <input class="form-control" type="text" [(ngModel)]="form.categoria" name="categoria" placeholder="Opcional">
+          </div>
+
+          <div>
+            <label class="form-label">Contenido</label>
+            <input class="form-control" type="number" min="0" step="0.01"
+                   [(ngModel)]="form.contenido" name="contenido" placeholder="Ej. 600">
+            <small class="text-danger" *ngIf="errors.contenido">{{ errors.contenido }}</small>
+          </div>
+
+          <!-- Unidad como SELECT con opción "Otro..." -->
+          <div>
+            <label class="form-label">Unidad</label>
+            <select class="form-select"
+                    [(ngModel)]="form.unidad"
+                    name="unidad"
+                    (ngModelChange)="onUnidadChange($event)">
+              <option *ngFor="let u of unidadesCat" [value]="u">{{ u }}</option>
+              <option value="otro">Otro…</option>
+            </select>
+            <small class="text-danger" *ngIf="errors.unidad">{{ errors.unidad }}</small>
+          </div>
+
+          <!-- Si eligen "Otro", aparece este input -->
+          <div *ngIf="usarUnidadPersonalizada">
+            <label class="form-label">Especifica la unidad</label>
+            <input class="form-control" type="text"
+                   [(ngModel)]="form.unidadPersonalizada" name="unidadPersonalizada"
+                   placeholder="Ej. blister, tira, frasco, lata">
+            <small class="text-danger" *ngIf="errors.unidadPersonalizada">{{ errors.unidadPersonalizada }}</small>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button class="btn btn-outline-secondary" (click)="cancelarNuevo()" type="button">Cancelar</button>
+          <button class="btn btn-primary" type="button" (click)="guardarNuevo()" [disabled]="loading">
+            {{ loading ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+
+        <div class="mt-3">
+          <small class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</small>
+          <small class="text-success" *ngIf="successMsg">{{ successMsg }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================== EXISTENTE ================== -->
+    <div *ngIf="modo==='existente'" class="card card--form">
+      <div class="card-header--gradient">
+        <h5 class="mb-0 title-card">Actualizar producto existente</h5>
+      </div>
+
+      <div class="card-body">
+        <!-- Buscador -->
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label">Buscar por</label>
+            <select class="form-select" [(ngModel)]="criterio" name="criterio">
+              <option value="nombre">Nombre</option>
+              <option value="clave">Clave</option>
+            </select>
+          </div>
+          <div class="col-md-7">
+            <label class="form-label">Término</label>
+            <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Escribe el nombre o la clave">
+          </div>
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-primary" type="button" (click)="buscarExistente()" [disabled]="buscando">
+              {{ buscando ? 'Buscando...' : 'Buscar' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="table-responsive mt-3" *ngIf="resultados.length">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th class="text-end">Precio</th>
+                <th class="text-center">Stock</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of resultados">
+                <td>{{ p.clave }}</td>
+                <td>{{ p.nombre }}</td>
+                <td>{{ p.categoria || '—' }}</td>
+                <td class="text-end">{{ p.precio | currency:'MXN':'symbol-narrow' }}</td>
+                <td class="text-center">{{ p.stock }}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="seleccionarProducto(p)">
+                    Seleccionar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Panel de edición -->
+        <div class="alert alert-primary mt-3" *ngIf="seleccionado">
+          <div class="mb-2">
+            <strong>Producto seleccionado:</strong> {{ seleccionado.clave }} — {{ seleccionado.nombre }}
+          </div>
+          <div class="row g-2">
+            <div class="col-md-4">
+              <label class="form-label">Nuevo precio (MXN)</label>
+              <input class="form-control" type="number" min="0" step="0.01"
+                     [(ngModel)]="nuevoPrecio" name="nuevoPrecio"
+                     placeholder="Dejar vacío para no cambiar">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Cantidad a ingresar (stock)</label>
+              <input class="form-control" type="number" min="0" step="1"
+                     [(ngModel)]="cantidadAgregar" name="cantidadAgregar"
+                     placeholder="Ej. 10">
+            </div>
+            <div class="col-md-4 d-grid align-items-end">
+              <button class="btn btn-primary mt-4" type="button" (click)="actualizarExistente()" [disabled]="loading">
+                {{ loading ? 'Aplicando...' : 'Aplicar cambios' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <small class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</small>
+          <small class="text-success" *ngIf="successMsg">{{ successMsg }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

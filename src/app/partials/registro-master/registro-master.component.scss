@@ -1,0 +1,170 @@
+
+/* Contenedor y card principal */
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: #fbf8f3;
+  color: #0f172a;
+}
+
+.section-registro {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.body-registro {
+  width: 100%;
+  max-width: 980px;
+  margin: 24px auto 48px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #efebe4;
+  border-radius: 26px;
+  box-shadow: 0 16px 44px rgba(13, 42, 53, .10);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 18px;
+  height: auto !important;
+}
+
+/* Cabecera V2 */
+.title-user,
+.body-registro > .row { grid-column: 1 / -1; }
+
+.title-user {
+  grid-column: 1 / -1;
+  width: 100%;
+  text-align: center;
+  padding: 12px 0;
+  margin-bottom: 12px;
+  font-family: Nexa-Bold, ui-sans-serif, system-ui;
+  font-size: 30px;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ea580c, #ff7a33);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+}
+
+/* Título y descripción debajo del chip */
+.form__title {
+  grid-column: 1 / -1;
+  margin: 0 0 4px 0;
+  font-family: Nexa-Bold, ui-sans-serif, system-ui;
+  font-size: 34px;
+  line-height: 1.15;
+  color: #0d2a35;
+  font-weight: 900;
+}
+.form__desc {
+  grid-column: 1 / -1;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #445d69;
+}
+
+/* Campos en 2 columnas */
+.mat-input,
+mat-form-field {
+  width: 100% !important;
+}
+
+/* Angular Material “outline” estilo V2 */
+::ng-deep .mat-mdc-form-field { width: 100%; }
+
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+  background: #fff;
+  border-radius: 12px;
+  min-height: 48px;
+}
+
+::ng-deep .mdc-notched-outline__leading,
+::ng-deep .mdc-notched-outline__notch,
+::ng-deep .mdc-notched-outline__trailing {
+  border-color: #e7ded2 !important;
+}
+
+::ng-deep .mdc-text-field--focused .mdc-notched-outline__leading,
+::ng-deep .mdc-text-field--focused .mdc-notched-outline__notch,
+::ng-deep .mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: #ea580c !important;
+}
+
+::ng-deep .mdc-text-field:hover .mdc-notched-outline__leading,
+::ng-deep .mdc-text-field:hover .mdc-notched-outline__notch,
+::ng-deep .mdc-text-field:hover .mdc-notched-outline__trailing {
+  border-color: #f0e3d6 !important;
+}
+
+::ng-deep .mat-mdc-form-field-infix {
+  padding: 8px 12px !important;
+  min-height: 48px;
+}
+
+::ng-deep input.mat-mdc-input-element,
+::ng-deep textarea.mat-mdc-input-element {
+  color: #0f172a;
+}
+
+::ng-deep .mat-mdc-form-field-hint-wrapper,
+::ng-deep .mat-mdc-form-field-hint-end {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* Label flotante más grande y negro al enfocar o con valor */
+::ng-deep .mat-mdc-floating-label {
+  font-size: 16px;
+  color: #6b7280;
+  transition: all .2s ease-in-out;
+}
+::ng-deep .mdc-text-field--focused .mat-mdc-floating-label,
+::ng-deep .mat-mdc-form-field-should-float .mat-mdc-floating-label {
+  font-size: 18px !important;
+  font-weight: 700;
+  color: #000000 !important;
+  transform: translateY(-28px) scale(1.05);
+}
+
+/* Icono ojo */
+.eye-icon {
+  cursor: pointer;
+  color: #475569;
+  transition: color .15s ease;
+}
+.eye-icon:hover { color: #ea580c; }
+
+/* Errores */
+.invalid-feedback {
+  grid-column: span 1;
+  margin-top: -4px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+/* Botones */
+.section-buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+.btn-primary {
+  min-width: 208px;
+  height: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ea580c, #ff7a33);
+  color: #fff;
+  font-weight: 800;
+}
+.btn-danger {
+  min-width: 208px;
+  height: 48px;
+  border-radius: 12px;
+}

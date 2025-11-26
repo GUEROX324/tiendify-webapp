@@ -1,0 +1,73 @@
+/* ====== Integración con tu navbar (no fixed) ====== */
+:root{
+  --pos-bg:#fbf8f3;
+  --pos-border:#e7d8c8;
+  --pos-peach-1:#fff3ec;
+}
+
+.wrapper{
+  min-height: 100vh;
+  width: 100%;
+  background: var(--pos-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.header-home-admin{
+  position: sticky;   /* navbar visible sin tapar el contenido */
+  top: 0;
+  z-index: 1050;
+  background: var(--pos-bg);
+  border-bottom: 1px solid var(--pos-border);
+}
+
+.body-admin{
+  flex: 1 1 auto;
+  padding: 16px;
+}
+
+/* Ajustes de separación suaves debajo del navbar */
+.body-admin .container{ margin-top: 12px; }
+.navbar{ margin-bottom: 0 !important; }
+
+/* ====== Zona de tabla / buscador ====== */
+.table-wrapper{ overflow: auto; max-width: 100%; }
+
+.spinner{
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+/* ====== Material Table con tu paleta ====== */
+.mat-mdc-table{
+  background: #fff;
+  border: 1px solid var(--pos-border);
+  border-radius: 12px;
+}
+
+.mdc-data-table__header-cell{
+  font-weight: 800;
+  background: var(--pos-peach-1);
+}
+
+.mdc-data-table__cell{
+  vertical-align: middle;
+}
+
+.text-end{ text-align: end; }
+.text-center{ text-align: center; }
+
+.prod-name{ font-weight: 700; }
+.prod-extra{ font-size: 12px; opacity: .75; }
+
+/* ====== Paginador Material ====== */
+.mdc-data-table__pagination{
+  border-top: 1px solid var(--pos-border);
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 991.98px){
+  .body-admin{ padding: 12px; }
+  .table-wrapper{ margin-top: 8px; }
+}
